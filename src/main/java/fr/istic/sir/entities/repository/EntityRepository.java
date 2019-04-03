@@ -7,9 +7,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+@SuppressWarnings("unchecked")
 public abstract class EntityRepository<T> implements Repository<T> {
     private Class<T> entityClass;
 
@@ -26,6 +28,9 @@ public abstract class EntityRepository<T> implements Repository<T> {
      */
     @Override
     public T save(T o) {
+        Objects.requireNonNull(o, "Parameter o passed to "
+                + EntityRepository.class.getName() + "#save method should not be null.");
+
         runInTransaction(em -> em.persist(o));
 
         return o;
@@ -53,6 +58,9 @@ public abstract class EntityRepository<T> implements Repository<T> {
      */
     @Override
     public List<T> findBy(String columnName, String value) {
+        Objects.requireNonNull(columnName, "columnName should not be null.");
+        Objects.requireNonNull(value, "value should not be null.");
+
         Query query = EntityManagerHelper.getEntityManager().createQuery("SELECT u FROM " + entityClass.getName() + " u WHERE " + columnName + " = :value");
         query.setParameter(value, value);
 
@@ -67,6 +75,8 @@ public abstract class EntityRepository<T> implements Repository<T> {
      */
     @Override
     public Optional<T> findById(Object id) {
+        Objects.requireNonNull(id, "id should not be null.");
+
         return Optional.ofNullable(EntityManagerHelper.getEntityManager().find(entityClass, id));
     }
 
@@ -79,6 +89,9 @@ public abstract class EntityRepository<T> implements Repository<T> {
      */
     @Override
     public Optional<T> findOne(String columnName, String value) {
+        Objects.requireNonNull(columnName, "columnName should not be null.");
+        Objects.requireNonNull(value, "value should not be null.");
+
         Query query = EntityManagerHelper.getEntityManager()
                 .createQuery("SELECT u FROM " + entityClass.getName() + " u WHERE " + columnName + " = :value");
         query.setParameter(value, value);
@@ -94,6 +107,9 @@ public abstract class EntityRepository<T> implements Repository<T> {
      */
     @Override
     public T update(T o) {
+        Objects.requireNonNull(o, "Parameter o passed to "
+                + EntityRepository.class.getName() + "#update method should not be null.");
+
         runInTransaction(em -> em.merge(o));
         return o;
     }
@@ -106,11 +122,19 @@ public abstract class EntityRepository<T> implements Repository<T> {
      */
     @Override
     public T delete(T o) {
+        Objects.requireNonNull(o, "Parameter o passed to "
+                + EntityRepository.class.getName() + "#delete method should not be null.");
+
         runInTransaction(em -> em.remove(o));
 
         return o;
     }
 
+    /**
+     * Run a query in a transaction try catch.
+     *
+     * @param action Action query to run
+     */
     private void runInTransaction(Consumer<EntityManager> action) {
         EntityManagerHelper.beginTransaction();
         try {
