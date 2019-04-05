@@ -54,7 +54,7 @@ public class Meeting implements Serializable {
         this.title = title;
     }
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     public String getSummary() {
         return summary;
     }

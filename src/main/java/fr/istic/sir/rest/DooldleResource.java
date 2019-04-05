@@ -1,7 +1,7 @@
 package fr.istic.sir.rest;
 
-import fr.istic.sir.entities.*;
 import fr.istic.sir.entities.Date;
+import fr.istic.sir.entities.*;
 import fr.istic.sir.entities.repository.SurveyRepository;
 import fr.istic.sir.entities.repository.UserRepository;
 import fr.istic.sir.repositories.Repository;
@@ -83,7 +83,7 @@ public class DooldleResource {
         repository.save(user);
 
         // update survey link
-        survey.setLink("//localhost:4200/" + survey.getId());
+        survey.setLink("/api/surveys" + survey.getId());
         surveyRepository.update(survey);
 
         return user;
