@@ -1,6 +1,5 @@
 package fr.istic.sir.rest;
 
-import fr.istic.sir.entities.Date;
 import fr.istic.sir.entities.*;
 import fr.istic.sir.entities.repository.SurveyRepository;
 import fr.istic.sir.entities.repository.UserRepository;
@@ -15,7 +14,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.DatatypeConverter;
-import java.text.ParseException;
 import java.util.*;
 
 @Path("/doodle")
@@ -83,7 +81,7 @@ public class DooldleResource {
         repository.save(user);
 
         // update survey link
-        survey.setLink("/api/surveys" + survey.getId());
+        survey.setLink("/api/surveys/" + survey.getId());
         surveyRepository.update(survey);
 
         return user;
@@ -98,8 +96,8 @@ public class DooldleResource {
         List<Address> l = new ArrayList<>();
         for (int i = 0; i < locations.length(); ++i) {
             Address address = new Address(locations.getString(i));
-            address.setSurvey(survey);
             l.add(address);
+            address.setSurvey(survey);
         }
 
         return l;
@@ -108,10 +106,9 @@ public class DooldleResource {
     /**
      * @param survey Survey to associate to
      * @param dates  Locations to associate to
-     * @throws JSONException  JSONException
-     * @throws ParseException ParseException
+     * @throws JSONException JSONException
      */
-    private List<Date> associateDate(Survey survey, JSONArray dates) throws JSONException {
+    private List<fr.istic.sir.entities.Date> associateDate(Survey survey, JSONArray dates) throws JSONException {
         List<fr.istic.sir.entities.Date> l = new ArrayList<>();
         for (int i = 0; i < dates.length(); ++i) {
             fr.istic.sir.entities.Date d = new fr.istic.sir.entities.Date(parseToDate(dates.getString(i)));

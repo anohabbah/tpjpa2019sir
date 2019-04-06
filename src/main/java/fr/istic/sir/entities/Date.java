@@ -43,6 +43,7 @@ public class Date implements Serializable {
     public void setTime(java.util.Date time) {
         this.time = time;
     }
+
     @ManyToMany
     @JoinTable(
             name = "date_user",

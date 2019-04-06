@@ -41,7 +41,7 @@ public abstract class Survey implements Serializable {
     }
 
     @JsonBackReference
-    @ManyToOne(targetEntity = Meeting.class, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "meeting_id", nullable = false)
     public Meeting getMeeting() {
         return meeting;

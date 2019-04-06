@@ -4,6 +4,7 @@ import org.codehaus.jackson.annotate.JsonBackReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "addresses")
@@ -13,6 +14,8 @@ public class Address implements Serializable {
     private String location;
 
     private Survey survey;
+
+    private List<User> voters;
 
     public Address() {
     }
@@ -38,6 +41,20 @@ public class Address implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    @ManyToMany
+    @JoinTable(
+            name = "address_user",
+            joinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "email")
+    )
+    public List<User> getVoters() {
+        return voters;
+    }
+
+    public void setVoters(List<User> voters) {
+        this.voters = voters;
     }
 
     @JsonBackReference
