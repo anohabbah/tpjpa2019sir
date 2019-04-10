@@ -11,6 +11,7 @@ public class UserRepository extends EntityRepository<User> {
         Query query = EntityManagerHelper.getEntityManager()
                 .createQuery("select u from User u where u.email like :email");
         query.setParameter("email", "%" + email + "%");
+        query.setMaxResults(10);
 
         return query.getResultList();
     }

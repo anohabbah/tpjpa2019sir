@@ -43,11 +43,12 @@ public class Address implements Serializable {
         this.location = location;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "address_user",
             joinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "email")
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "email"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"address_id", "user_id"})
     )
     public List<User> getVoters() {
         return voters;

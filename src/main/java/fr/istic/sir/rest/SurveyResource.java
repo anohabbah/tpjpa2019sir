@@ -12,6 +12,7 @@ import org.codehaus.jettison.json.JSONObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Collection;
+import java.util.Optional;
 
 @Path("/surveys")
 public class SurveyResource {
@@ -63,6 +64,18 @@ public class SurveyResource {
 
         return survey;
     }
+
+    @POST
+    @Path("/{id}/votes")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Survey vote(@PathParam("id") Long id, JSONObject request) {
+        Optional<Survey> opt = repository.findById(id);
+        if (!opt.isPresent()) return null;
+
+        return null;
+    }
+
 //
 //    /**
 //     * @param survey    Survey to associate to
