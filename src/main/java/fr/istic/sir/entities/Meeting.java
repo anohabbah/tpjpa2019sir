@@ -54,7 +54,7 @@ public class Meeting implements Serializable {
         this.title = title;
     }
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     public String getSummary() {
         return summary;
     }
@@ -84,11 +84,13 @@ public class Meeting implements Serializable {
         this.creator = creator;
     }
 
+    @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "meeting_user",
             joinColumns = @JoinColumn(name = "meeting_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "email")
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "email"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"meeting_id", "user_id"})
     )
     public List<User> getParticipants() {
         return participants;

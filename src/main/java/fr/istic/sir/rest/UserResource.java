@@ -9,6 +9,7 @@ import org.codehaus.jettison.json.JSONObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Path("/users")
@@ -81,4 +82,12 @@ public class UserResource {
 
         return null;
     }
+
+    @POST
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<User> getUserByEmail(@PathParam("id") String id) {
+        return ((UserRepository) repository).findByEmail(id);
+    }
+
 }

@@ -43,11 +43,13 @@ public class Date implements Serializable {
     public void setTime(java.util.Date time) {
         this.time = time;
     }
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "date_user",
             joinColumns = @JoinColumn(name = "date_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "email")
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "email"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"date_id", "user_id"})
     )
     public List<User> getVoters() {
         return voters;

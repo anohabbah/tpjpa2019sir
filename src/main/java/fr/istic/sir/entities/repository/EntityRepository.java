@@ -11,6 +11,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * @param <T>
+ * @author Abbah Anoh
+ */
 @SuppressWarnings("unchecked")
 public abstract class EntityRepository<T> implements Repository<T> {
     private Class<T> entityClass;
@@ -135,7 +139,7 @@ public abstract class EntityRepository<T> implements Repository<T> {
      *
      * @param action Action query to run
      */
-    private void runInTransaction(Consumer<EntityManager> action) {
+    public void runInTransaction(Consumer<EntityManager> action) {
         EntityManagerHelper.beginTransaction();
         try {
             action.accept(EntityManagerHelper.getEntityManager());
